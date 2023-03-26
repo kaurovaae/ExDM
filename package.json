@@ -10,7 +10,7 @@
     "react-hook-form": "^7.43.8"
   },
   "scripts": {
-    "start": "webpack serve",
+    "start": "webpack serve --config ./build/webpack/config.js",
     "build": "webpack",
     "build-prod": "webpack --mode=production",
     "clean": "rd /s /q dist"
