@@ -1,6 +1,4 @@
 module.exports = {
-    presets: [
-        '@babel/preset-env',
-        '@babel/preset-react',
-    ],
-}
+    // Добавляем в babel пресет для работы с React
+    presets: ['@babel/preset-env', '@babel/preset-react'],
+};
