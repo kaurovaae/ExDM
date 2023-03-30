@@ -5,10 +5,10 @@
   "private": true,
   "scripts": {
     "start": "npx concurrently -r --kill-others npm:front npm:back",
-    "front": "webpack serve --config ./build/webpack/config.js",
+    "front": "webpack serve --mode=development --config ./build/webpack/client.config.js",
     "back": "nodemon ./src/server.js",
-    "build": "webpack",
-    "build-prod": "webpack --mode=production",
+    "build": "webpack --mode=development --config ./build/webpack/client.config.js",
+    "build-prod": "webpack --mode=production --config ./build/webpack/client.config.js",
     "clean": "rd /s /q dist"
   },
   "dependencies": {
