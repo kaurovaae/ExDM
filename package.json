@@ -4,11 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" npx concurrently -r --kill-others npm:front npm:back",
-    "front": "webpack serve --mode=development --config ./build/webpack.client.ts",
-    "back": "nodemon ./src/server.ts",
-    "build-dev": "webpack --mode=development --config ./build/webpack.client.ts",
-    "build-prod": "webpack --mode=production --config ./build/webpack.client.ts",
+	"start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server --config build/webpack.client.ts --mode development",
+    "build": "webpack --mode=production --config ./build/webpack.client.ts",
     "clean": "rd /s /q dist",
     "eslint": "npx eslint src -c .eslintrc.js --ext .ts,.tsx",
     "ts": "tsc",

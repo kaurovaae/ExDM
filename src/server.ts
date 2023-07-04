@@ -1,6 +1,5 @@
 import express                          from "express";
-// import bodyParser                       from "body-parser";
-// import cors                             from "cors";
+import bodyParser                       from "body-parser";
 import favicon							from "serve-favicon";
 import cookieParser 					from "cookie-parser";
 import db                               from "./api/db";
@@ -11,9 +10,7 @@ import {AddressInfo} 					from "net";
 const app = express();
 const apiPort = 3005;
 
-// app.use(bodyParser.urlencoded({extended: true}));
-// app.use(cors());
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 app.use(cookieParser);
 app.use(favicon(path.resolve(__dirname, '../static/favicon.ico')));

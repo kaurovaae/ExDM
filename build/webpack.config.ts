@@ -3,6 +3,9 @@ import {DefinePlugin} 							from "webpack";
 import HtmlWebpackPlugin                        from "html-webpack-plugin";
 import MiniCssExtractPlugin                     from "mini-css-extract-plugin";
 import {MODE, baseConsts}                       from "./webpack.consts";
+import db                              			from "../src/api/db";
+import api                              		from "../src/api/routers";
+import bodyParser                       		from "body-parser";
 
 export function getConfig(isProd: boolean, targets: string[]): unknown {
 	const buildConsts = baseConsts(isProd);
@@ -20,8 +23,25 @@ export function getConfig(isProd: boolean, targets: string[]): unknown {
     return {
         devtool: isProd ? false : "eval",
         devServer: {
-            // Включает автоматическую перезагрузку страницы при изменениях
-            hot: true,
+			client: {
+				progress: false,
+				overlay: false
+			},
+			static: path.join(__dirname, "../dist/static"),
+			compress: true,
+			port: 3005,
+			// Включает автоматическую перезагрузку страницы при изменениях
+			hot: true,
+			open: false,
+			historyApiFallback: true,
+			setupMiddlewares: (middlewares, devServer) => {
+				devServer.app.use(bodyParser.json());
+
+				db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+				devServer.app.use(`/api`, api);
+				return middlewares;
+			},
         },
         // Указываем точку входа - главный модуль приложения,
         // в который импортируются все остальные

@@ -3,10 +3,10 @@ const Product = require('../models/product');
 createProduct = (req, res) => {
     const body = req.body;
 
-    if (!body) {
+	if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide a product',
+            error: 'You must provide a product'
         })
     }
 
@@ -22,15 +22,16 @@ createProduct = (req, res) => {
                         .json({
                             success: true,
                             id: product._id,
-                            message: 'Product created!',
+                            message: 'Product created!'
                         })
                 })
                 .catch(error => {
+					console.log("error", error)
                     return res
                         .status(400)
                         .json({
                             error,
-                            message: 'Product not created!',
+                            message: 'Product not created!'
                         })
                 })
         }
@@ -52,7 +53,7 @@ updateProduct = async (req, res) => {
             .status(400)
             .json({
                 success: false,
-                error: 'You must provide a body to update',
+                error: 'You must provide a body to update'
             })
     }
 
@@ -72,7 +73,7 @@ updateProduct = async (req, res) => {
                         .json({
                             success: true,
                             id: product._id,
-                            message: 'Product updated!',
+                            message: 'Product updated!'
                         })
                 })
                 .catch(error => {
@@ -80,7 +81,7 @@ updateProduct = async (req, res) => {
                         .status(404)
                         .json({
                             error,
-                            message: 'Product not updated!',
+                            message: 'Product not updated!'
                         })
                 })
         }
@@ -89,7 +90,7 @@ updateProduct = async (req, res) => {
             .status(404)
             .json({
                 error,
-                message: 'Update error: there is no product with specified id',
+                message: 'Update error: there is no product with specified id'
             })
     }
 }
