@@ -1,27 +1,31 @@
-import React                        from 'react';
-import ReactDOM                     from 'react-dom/client';
-import Layout                       from './ui/layout';
-import {
-    QueryClient,
-    QueryClientProvider,
-    useQuery
-}                                   from 'react-query';
-import {ReactQueryDevtools}         from 'react-query/devtools';
-import {Provider}                   from 'react-redux';
-import store                        from './ui/store';
+import React                        from "react";
+import ReactDOM                     from "react-dom/client";
+import {Provider}                   from "react-redux";
+import {HistoryRouter as Router} 	from "redux-first-history/rr6";
+import getStore		                from "./ui/store";
+import Layout                       from "./ui/layout";
 
-const queryClient = new QueryClient()
+import 'antd/dist/reset.css';
+import 'dayjs/locale/ru';
 
-export const App = () => (
+const {store, history} = getStore();
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const app = <Provider store={store}><Router history={history as History}>
+		<Layout />
+	</Router>
+</Provider>
+
+export const App = (): React.ReactElement => (
     <React.StrictMode>
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <Layout />
-                <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-        </Provider>
+		{app}
     </React.StrictMode>
 )
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	document.getElementById("root")
+);
 root.render(<App />);

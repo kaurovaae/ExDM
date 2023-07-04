@@ -1,0 +1,12 @@
+**/*.svg
+**/*.jpg
+**/*.jpeg
+**/*.png
+**/*.gif
+**/*.woff
+**/*.woff2
+**/*.css
+**/*.md
+**/*.json
+build
+global.d.ts

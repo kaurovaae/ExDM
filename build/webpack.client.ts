@@ -1,5 +1,5 @@
-import {getConfig}                  from './webpack.config';
-import {MODE}                       from './webpack.consts';
+import {getConfig}                  from "./webpack.config";
+import {MODE}                       from "./webpack.consts";
 
 function getTargets(isProd): string[] {
     if (!isProd) {

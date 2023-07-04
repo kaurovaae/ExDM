@@ -1,22 +1,35 @@
-import express                          from 'express';
-import bodyParser                       from 'body-parser';
-import cors                             from 'cors';
-import db                               from './api/db';
-import api                              from './api/routers';
+import express                          from "express";
+// import bodyParser                       from "body-parser";
+// import cors                             from "cors";
+import favicon							from "serve-favicon";
+import cookieParser 					from "cookie-parser";
+import db                               from "./api/db";
+import api                              from "./api/routers";
+import path 							from "path";
+import {AddressInfo} 					from "net";
 
 const app = express();
 const apiPort = 3005;
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(cors());
+// app.use(bodyParser.json());
 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+app.use(cookieParser);
+app.use(favicon(path.resolve(__dirname, '../static/favicon.ico')));
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+app.use(`/static`, express.static('../static'));
 
-app.use('/api', api);
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
+app.use("/api", api);
+
+app.use("/", function(req, res) {
+	res.sendFile(path.resolve(__dirname, "../build/index.html"));
+});
+
+const server = app.listen(apiPort, () => {
+	const address = server.address() as AddressInfo;
+	// eslint-disable-next-line
+	console.log("Listening on http://", address?.address + ":" + address?.port);
+});
