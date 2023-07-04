@@ -1,6 +1,6 @@
 import React                    from "react";
 
-const LayoutBundle = () => {
+const LayoutBundle: React.FC = (): React.ReactElement => {
     return (
         <div>
             layout
@@ -8,4 +8,4 @@ const LayoutBundle = () => {
     )
 }
 
-export default React.memo(LayoutBundle);
+export default LayoutBundle;

@@ -1,0 +1,34 @@
+{
+	"sourceType": "unambiguous",
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react",
+		[
+			"@babel/preset-typescript",
+			{
+				"onlyRemoveTypeImports": true,
+				"allowDeclareFields": true,
+				"allowNamespaces": false
+			}
+		]
+	],
+	"plugins": [
+		[
+			"@babel/plugin-transform-runtime",
+			{
+				"regenerator": false,
+				"version": "^7.17.2"
+			}
+		],
+		[
+			"module-resolver", {
+				"root": ["./src"],
+				"extensions": [".js", ".ts", ".tsx"]
+			}
+		]
+	],
+	"ignore": [
+		"node_modules\/(?!(moment))",
+		"bower_components"
+	]
+}

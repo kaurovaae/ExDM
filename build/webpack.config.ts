@@ -1,9 +1,9 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {MODE} = require('./consts');
+import path                                     from 'path';
+import HtmlWebpackPlugin                        from 'html-webpack-plugin';
+import MiniCssExtractPlugin                     from 'mini-css-extract-plugin';
+import {MODE}                                   from './webpack.consts';
 
-function getConfig(isProd, targets) {
+export function getConfig(isProd: boolean, targets: string[]): unknown {
     const plugins = [
         new HtmlWebpackPlugin({
             template: './build/index.html', // Данный html будет использован как шаблон
@@ -21,7 +21,7 @@ function getConfig(isProd, targets) {
         },
         // Указываем точку входа - главный модуль приложения,
         // в который импортируются все остальные
-        entry: './src/index.js',
+        entry: './src/index.tsx',
         mode: isProd ? MODE.PRODUCTION : MODE.DEVELOPMENT,
         module: {
             rules: [
@@ -51,7 +51,7 @@ function getConfig(isProd, targets) {
                     type: 'asset/resource',
                 },
                 {
-                    test: /\.js$/,
+                    test: /\.jsx?$/,
                     // не обрабатываем файлы из node_modules
                     exclude: /node_modules/,
                     use: {
@@ -66,6 +66,23 @@ function getConfig(isProd, targets) {
                         },
                     },
                 },
+                {
+                    test: /\.tsx?$/,
+                    // не обрабатываем файлы из node_modules
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            // Использование кэша для избежания рекомпиляции при каждом запуске
+                            cacheDirectory: true,
+                            presets: [
+                                '@babel/env',
+                                '@babel/react',
+                                "@babel/typescript",
+                            ],
+                        },
+                    },
+                },
             ],
         },
         output: {
@@ -74,15 +91,19 @@ function getConfig(isProd, targets) {
             // Очищает директорию dist перед обновлением бандла
             // Свойство стало доступно с версии 5.20.0, до этого использовался
             // CleanWebpackPlugin
+            // комманда в package.json: clean
             clean: true,
             // Директория, в которой будет размещаться итоговый бандл, папка dist в корне приложения
             path: path.resolve(__dirname, '../../dist'),
         },
         plugins,
         target: ['web', "browserslist:" + targets.join(',')],
+        resolve: {
+            extensions: [".ts", ".tsx", ".js", ".jsx"],
+            alias: {
+                ui: path.resolve(__dirname, '../src/ui'),
+                api: path.resolve(__dirname, '../src/api'),
+            },
+        }
     }
 }
-
-module.exports = {
-    getConfig
-};

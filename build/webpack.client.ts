@@ -1,7 +1,7 @@
-const {getConfig} = require('./base.config');
-const {MODE} = require('./consts');
+import {getConfig}                  from './webpack.config';
+import {MODE}                       from './webpack.consts';
 
-function getTargets(isProd) {
+function getTargets(isProd): string[] {
     if (!isProd) {
         return [
             "Chrome >= 96"
@@ -16,7 +16,7 @@ function getTargets(isProd) {
     ]
 }
 
-const configs = [];
+const configs: unknown[] = [];
 
 const isProd = process.env.NODE_ENV === MODE.PRODUCTION;
 

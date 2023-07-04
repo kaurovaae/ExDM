@@ -1,8 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const db = require('./api/db');
-const api = require('./api/routers');
+import express                          from 'express';
+import bodyParser                       from 'body-parser';
+import cors                             from 'cors';
+import db                               from './api/db';
+import api                              from './api/routers';
 
 const app = express();
 const apiPort = 3005;
