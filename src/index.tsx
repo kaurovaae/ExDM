@@ -3,17 +3,14 @@ import ReactDOM                     from "react-dom/client";
 import {Provider}                   from "react-redux";
 import {HistoryRouter as Router} 	from "redux-first-history/rr6";
 import getStore		                from "./ui/store";
-import Layout                       from "./ui/layout";
-
-import 'antd/dist/reset.css';
-import 'dayjs/locale/ru';
+import LayoutBundle                 from "./ui/layout";
 
 const {store, history} = getStore();
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const app = <Provider store={store}><Router history={history as History}>
-		<Layout />
+		<LayoutBundle />
 	</Router>
 </Provider>
 

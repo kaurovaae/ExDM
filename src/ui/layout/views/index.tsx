@@ -1,11 +1,26 @@
-import React                    from "react";
+import React                    		from "react";
+import {Layout}		 					from "antd";
 
-const LayoutBundle: React.FC = (): React.ReactElement => {
+import styles 							from "./index.css";
+
+import 'antd/dist/reset.css';
+import 'dayjs/locale/ru';
+
+const {Header, Footer, Sider, Content} = Layout;
+
+const LayoutContent: React.FC = (): React.ReactElement => {
 	return (
-		<div>
-			Layout
-		</div>
+		<Layout>
+			<Layout>
+				<Sider className={styles.sider}>SideBar</Sider>
+				<Layout>
+					<Header className={styles.header}>Header</Header>
+					<Content className={styles.content}>Content</Content>
+				</Layout>
+			</Layout>
+			<Footer className={styles.footer}>Footer</Footer>
+		</Layout>
 	)
 }
 
-export default LayoutBundle;
+export default LayoutContent;

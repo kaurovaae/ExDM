@@ -5,14 +5,14 @@ import {
 	// useQuery
 }                                   from "react-query";
 import {ReactQueryDevtools}         from "react-query/devtools";
-import Layout					from "ui/layout/views";
+import LayoutContent				from "ui/layout/views";
 
 const queryClient = new QueryClient()
 
 const LayoutBundle: React.FC = (): React.ReactElement => {
     return (
 		<QueryClientProvider client={queryClient}>
-			<Layout />
+			<LayoutContent />
 			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>
     )

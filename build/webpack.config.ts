@@ -36,12 +36,55 @@ export function getConfig(isProd: boolean, targets: string[]): unknown {
                 },
                 {
                     // Добавляем загрузчики стилей
-                    test: /\.(s[ac]|c)ss$/,
+                    test: /\.css$/,
                     use: [
-                        MiniCssExtractPlugin.loader,
-                        "css-loader",
-                        "postcss-loader",
-                        "sass-loader",
+						{
+							loader: MiniCssExtractPlugin.loader,
+							options: {
+								esModule: false,
+							},
+						},
+						{
+							loader: "css-loader",
+							options: {
+								modules: {
+									localIdentName: "[local]---[hash:base64:5]",
+								},
+								importLoaders: 1,
+							},
+						},
+						{
+							loader: "postcss-loader",
+							options: {
+								postcssOptions: {
+									plugins: [
+										[
+											"postcss-custom-media",
+										],
+										[
+											'postcss-discard-comments',
+											{
+												removeAll: true,
+											},
+										],
+										[
+											'postcss-mixins',
+										],
+										[
+											'postcss-preset-env',
+											{
+												stage: 0,
+												features: {
+													'nesting-rules': {
+														noIsPseudoSelector: true
+													},
+												},
+											}
+										]
+									]
+								}
+							},
+						},
                     ],
                 },
                 {
