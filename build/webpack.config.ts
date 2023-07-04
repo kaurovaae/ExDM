@@ -155,11 +155,6 @@ export function getConfig(isProd: boolean, targets: string[]): unknown {
         output: {
             // Все ассеты будут складываться в dist/assets
             assetModuleFilename: "assets/[hash][ext][query]",
-            // Очищает директорию dist перед обновлением бандла
-            // Свойство стало доступно с версии 5.20.0, до этого использовался
-            // CleanWebpackPlugin
-            // комманда в package.json: clean
-            clean: true,
             // Директория, в которой будет размещаться итоговый бандл, папка dist в корне приложения
             path: path.resolve(__dirname, "../../dist"),
         },

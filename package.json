@@ -6,7 +6,6 @@
   "scripts": {
 	"start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server --config build/webpack.client.ts --mode development",
     "build": "webpack --mode=production --config ./build/webpack.client.ts",
-    "clean": "rd /s /q dist",
     "eslint": "npx eslint src -c .eslintrc.js --ext .ts,.tsx",
     "ts": "tsc",
     "stylelint": "npx stylelint \"./src/**/*.css\"",
