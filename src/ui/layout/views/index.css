@@ -3,27 +3,24 @@
 }
 
 .header {
-	text-align: center;
 	color: #171717;
 	height: 64px;
-	padding-inline: 50px;
-	line-height: 64px;
+	padding: 24px 16px;
 	background-color: #fafafa;
+	line-height: 16px;
 }
 
 .content {
-	text-align: center;
-	min-height: 120px;
-	line-height: 120px;
 	color: #171717;
 	background-color: #fff;
+	padding: 24px 16px;
+	min-height: calc(100vh - 128px);
 }
 
 .sider {
-	text-align: center;
-	line-height: 120px;
 	color: #fff;
 	background-color: #003a8c !important;
+	padding: 24px;
 }
 
 .footer {

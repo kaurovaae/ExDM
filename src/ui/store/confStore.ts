@@ -9,14 +9,17 @@ import thunk 								from "redux-thunk";
 
 import {PREFIX as LAYOUT_PREFIX} 			from "ui/layout/consts";
 import {PREFIX as PRODUCT_PREFIX} 			from "ui/product/consts";
+import {PREFIX as DICTIONARY_PREFIX} 		from "ui/dictionary/consts";
 import layoutReducer 						from "ui/layout/reducer";
 import productReducer 						from "ui/product/reducer";
+import dictionaryReducer 						from "ui/dictionary/reducer";
 
 import type ConfiguredStore					from "ui/store/Model/ConfiguredStore";
 
 const staticReducers = {
 	[LAYOUT_PREFIX]: layoutReducer,
-	[PRODUCT_PREFIX]: productReducer
+	[PRODUCT_PREFIX]: productReducer,
+	[DICTIONARY_PREFIX]: dictionaryReducer
 }
 
 export function createStore(initialState?: unknown, initUrl?: string): ConfiguredStore {

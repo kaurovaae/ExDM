@@ -1,28 +1,28 @@
-const Product = require('../models/product');
+const DictionaryItem = require('../models/dictionary');
 
-createProduct = (req, res) => {
+createItem = (req, res) => {
     const body = req.body;
 
 	if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide a product'
+            error: 'You must provide an item'
         })
     }
 
     try {
-        const product = new Product(body)
+        const item = new DictionaryItem(body)
 
-        if (product) {
-            product
+        if (item) {
+			item
                 .save()
                 .then(() => {
                     return res
                         .status(201)
                         .json({
                             success: true,
-                            id: product._id,
-                            message: 'Product created!'
+                            id: item._id,
+                            message: 'Item created!'
                         })
                 })
                 .catch(error => {
@@ -30,7 +30,7 @@ createProduct = (req, res) => {
                         .status(400)
                         .json({
                             error,
-                            message: 'Product not created!'
+                            message: 'Item not created!'
                         })
                 })
         }
@@ -44,7 +44,7 @@ createProduct = (req, res) => {
     }
 }
 
-updateProduct = async (req, res) => {
+updateItem = async (req, res) => {
     const body = req.body
 
     if (!body) {
@@ -57,22 +57,21 @@ updateProduct = async (req, res) => {
     }
 
     try {
-        const product = await Product.findOne({
+        const item = await DictionaryItem.findOne({
             _id: req.params.id
         });
 
-        if (product) {
-            product.name = body.name
-            product.date = body.date || product.date
-            product
+        if (item) {
+			item.name = body.name
+			item
                 .save()
                 .then(() => {
                     return res
                         .status(200)
                         .json({
                             success: true,
-                            id: product._id,
-                            message: 'Product updated!'
+                            id: item._id,
+                            message: 'Item updated!'
                         })
                 })
                 .catch(error => {
@@ -80,7 +79,7 @@ updateProduct = async (req, res) => {
                         .status(404)
                         .json({
                             error,
-                            message: 'Product not updated!'
+                            message: 'Item not updated!'
                         })
                 })
         }
@@ -89,23 +88,23 @@ updateProduct = async (req, res) => {
             .status(404)
             .json({
                 error,
-                message: 'Update error: there is no product with specified id'
+                message: 'Update error: there is no item with specified id'
             })
     }
 }
 
-deleteProduct = async (req, res) => {
+deleteItem = async (req, res) => {
     try {
-        const product = await Product.findOneAndDelete({
+        const item = await DictionaryItem.findOneAndDelete({
             _id: req.params.id
         });
 
-        if (product) {
+        if (item) {
             return res
                 .status(200)
                 .json({
                     success: true,
-                    data: product
+                    data: item
                 })
         }
 
@@ -113,7 +112,7 @@ deleteProduct = async (req, res) => {
             .status(404)
             .json({
                 success: false,
-                error: `Delete error: there is no product with specified id`
+                error: `Delete error: there is no item with specified id`
             })
     } catch (err) {
         return res
@@ -125,18 +124,18 @@ deleteProduct = async (req, res) => {
     }
 }
 
-getProductById = async (req, res) => {
+getItemById = async (req, res) => {
     try {
-        const product = await Product.findOne({
+        const item = await DictionaryItem.findOne({
             _id: req.params.id
         });
 
-        if (product) {
+        if (item) {
             res
                 .status(200)
                 .json({
                     success: true,
-                    data: product
+                    data: item
                 });
         }
 
@@ -144,7 +143,7 @@ getProductById = async (req, res) => {
             .status(404)
             .json({
                 success: false,
-                error: `There is no product with specified id`
+                error: `There is no item with specified id`
             })
     } catch (err) {
         return res
@@ -156,22 +155,19 @@ getProductById = async (req, res) => {
     }
 }
 
-getProducts = async (req, res) => {
+getItems = async (req, res) => {
     const body = req.body;
-    const date = body && body.date;
-    const filter = date
-        ? {date: {$lte: date}}
-        : {};
+    const filter = {};
 
     try {
-        const products = await Product.find(filter);
+        const items = await DictionaryItem.find(filter);
 
-        if (products && products.length) {
+        if (items && items.length) {
             return res
                 .status(200)
                 .json({
                     success: true,
-                    data: products
+                    data: items
                 });
         }
 
@@ -179,7 +175,7 @@ getProducts = async (req, res) => {
             .status(200)
             .json({
                 success: true,
-                info: date ? 'There are no products with expired date!' : 'There are no products'
+                info: 'There are no items'
             })
     } catch (err) {
         return res
@@ -192,9 +188,9 @@ getProducts = async (req, res) => {
 }
 
 module.exports = {
-    createProduct,
-    updateProduct,
-    deleteProduct,
-    getProducts,
-    getProductById
+    createItem,
+    updateItem,
+    deleteItem,
+    getItems,
+    getItemById
 }
