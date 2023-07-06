@@ -6,6 +6,8 @@ import {MODE, baseConsts}                       from "./webpack.consts";
 import db                              			from "../src/api/db";
 import api                              		from "../src/api/routers";
 import bodyParser                       		from "body-parser";
+import favicon									from "serve-favicon";
+import express 									from "express";
 
 export function getConfig(isProd: boolean, targets: string[]): unknown {
 	const buildConsts = baseConsts(isProd);
@@ -36,6 +38,10 @@ export function getConfig(isProd: boolean, targets: string[]): unknown {
 			historyApiFallback: true,
 			setupMiddlewares: (middlewares, devServer) => {
 				devServer.app.use(bodyParser.json());
+
+				devServer.app.use(favicon(path.join(__dirname, '../static/favicon.ico')));
+
+				devServer.app.use(`/static`, express.static('../static'));
 
 				db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
