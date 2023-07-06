@@ -25,3 +25,8 @@ async function createProductImpl(data: {name: string, date: string}, callBack?: 
 		void message.error(res.result?.message || "При добавлении продукта произошла ошибка");
 	}
 }
+
+export function removeItem(id: string, callBack?: () => void) {
+	return (dispatch: Dispatch, getState: GetState): void => {
+	}
+}
