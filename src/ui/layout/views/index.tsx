@@ -5,6 +5,7 @@ import URLS, {ANY} 						from "../../../urls";
 import Product							from "ui/product";
 import Dictionary						from "ui/dictionary";
 import {NAV_ITEMS} 						from "ui/layout/consts";
+import LayoutView 						from "ui/layout/views/LayoutView";
 import {Link}							from "react-router-dom";
 
 import dayjs							from "dayjs";
@@ -32,7 +33,9 @@ const LayoutContent: React.FC = (): React.ReactElement => {
 				// 	console.log(collapsed, type);
 				// }}
 			>
-				<div className={styles.logo} />
+				<Link to={URLS.HOME}>
+					<i className={styles.logo} />
+				</Link>
 				<Menu
 					theme="dark"
 					mode="inline"
@@ -53,7 +56,8 @@ const LayoutContent: React.FC = (): React.ReactElement => {
 						<Routes>
 							<Route key={URLS.PRODUCT} path={URLS.PRODUCT + ANY} element={<Product />} />
 							<Route key={URLS.DICTIONARY} path={URLS.DICTIONARY + ANY} element={<Dictionary />} />
-							<Route path='*' element={<Navigate to={URLS.PRODUCT} replace />} />
+							<Route key={URLS.HOME} path={URLS.HOME} element={<LayoutView />} />
+							<Route path='*' element={<Navigate to={URLS.HOME} replace />} />
 						</Routes>
 					</div>
 				</Content>

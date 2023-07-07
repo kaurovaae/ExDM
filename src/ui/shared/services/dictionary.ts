@@ -20,6 +20,23 @@ export async function getDictionaryList(): Promise<{ok: boolean, result?: Dictio
 	return await get<DictionaryListResponse>(url);
 }
 
+interface DictionaryItem extends BaseElementInfo {
+	name: string;
+}
+
+type DictionaryItemResponse = {
+	data: DictionaryItem[];
+	success: boolean;
+	message: string;
+};
+
+export async function getDictionaryItem(params: {queryKey: string[]}): Promise<{ok: boolean, result?: DictionaryItemResponse} | undefined> {
+	const id = params.queryKey?.[0];
+	const url = getEndpoint() + '/' + id;
+
+	return await get<DictionaryItemResponse>(url);
+}
+
 export type CreateDictionaryItemRequest = {
 	name: string;
 };

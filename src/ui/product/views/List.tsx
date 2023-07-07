@@ -22,7 +22,7 @@ const ProductList: React.FC = (): React.ReactElement => {
 	const {isLoading, error, data} = useQuery('productList', getProductList);
 
 	const onPreviewItem = useCallback((id: string) => {
-		navigate(`${URLS.PRODUCT}/${URLS.PREVIEW}?macroId=${id}`);
+		navigate(`${URLS.PRODUCT}/${URLS.PREVIEW}?productId=${id}`);
 	}, [navigate]);
 
 	const onCreateItem = useCallback(() => {
@@ -30,7 +30,7 @@ const ProductList: React.FC = (): React.ReactElement => {
 	}, [navigate]);
 
 	const onEditItem = useCallback((id: string) => {
-		navigate(`${URLS.PRODUCT}/${URLS.EDIT}?macroId=${id}`);
+		navigate(`${URLS.PRODUCT}/${URLS.EDIT}?productId=${id}`);
 	}, [navigate]);
 
 	const onRemoveItem = useCallback((selectedId: string, cb: () => void): void => {
@@ -65,9 +65,14 @@ const ProductList: React.FC = (): React.ReactElement => {
 		date: formatDate(el.date)
 	}))
 
+	if (isLoading) {
+		return (
+			<div>Loading</div>
+		)
+	}
+
 	return (
 		<div>
-			{isLoading && <div>Loading</div>}
 			{dataSource && (
 				<Table
 					dataSource={dataSource}

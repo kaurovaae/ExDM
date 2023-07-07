@@ -1,5 +1,9 @@
-import React, {useCallback} 			from "react";
+import React, {
+	useEffect, useCallback
+} 										from "react";
+import Spinner 							from "ui/ui-kit/Spinner";
 import {useNavigate} 					from "react-router";
+import {useQuery} 						from "react-query";
 import {
 	Form, Input,
 	message, Space,
@@ -10,18 +14,26 @@ import {
 	StopOutlined
 } 										from "@ant-design/icons";
 import useDispatch 						from "ui/shared/hooks/useDispatch";
-import {createDictionaryItem} 			from "ui/dictionary/actions";
+import {getDictionaryItem} 				from "ui/shared/services/dictionary";
 
 import styles 							from "./index.css";
 
-const DictionaryCreate: React.FC = (): React.ReactElement => {
+interface Props {
+	id: string;
+}
+
+const DictionaryEditContent: React.FC<Props> = (props: Props): React.ReactElement => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const id = props.id;
+
+	const {isLoading, error, data} = useQuery(id, getDictionaryItem);
 
 	const [form] = Form.useForm();
 
 	const onFinish = useCallback((data) => {
-		dispatch(createDictionaryItem(data));
+		// dispatch(createDictionaryItem(data));
 	}, [dispatch]);
 
 	const onFinishFailed = useCallback(() => {
@@ -31,6 +43,16 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 	const back = useCallback(() => {
 		navigate(-1);
 	}, [navigate]);
+
+	if (isLoading) {
+		return <Spinner />
+	}
+
+	if (error) {
+		return <div>error</div>
+	}
+
+	console.log("data", data)
 
 	return (
 		<div>
@@ -75,4 +97,4 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 	)
 }
 
-export default DictionaryCreate;
+export default DictionaryEditContent;
