@@ -132,7 +132,7 @@ getProductById = async (req, res) => {
         });
 
         if (product) {
-            res
+			return res
                 .status(200)
                 .json({
                     success: true,

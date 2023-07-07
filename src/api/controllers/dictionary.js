@@ -131,7 +131,7 @@ getItemById = async (req, res) => {
         });
 
         if (item) {
-            res
+            return res
                 .status(200)
                 .json({
                     success: true,
