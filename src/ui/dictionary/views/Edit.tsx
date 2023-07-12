@@ -15,6 +15,7 @@ import {
 	message, Space
 } 										from "antd";
 import {CheckOutlined, StopOutlined} 	from "@ant-design/icons";
+import {QUERY} 							from "ui/dictionary/consts";
 
 import styles 							from "./index.css";
 
@@ -25,7 +26,7 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
-	const {isLoading, error, data} = useQuery(['dictionaryItem', `${id}`], getDictionaryItem, {
+	const {isLoading, error, data} = useQuery([QUERY.DICTIONARY_ITEM, `${id}`], getDictionaryItem, {
 		enabled: !!id
 	});
 
@@ -36,7 +37,7 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 	const mutation = useMutation(editDictionaryItem, {
 		onSuccess: (data) => {
 			if (data?.ok) {
-				void queryClient.invalidateQueries(['dictionaryList', `${id}`]);
+				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST, `${id}`]);
 				void message.success("Элемент справочника успешно изменён");
 			} else {
 				void message.error(data?.result?.message || "При изменении элемента справочника произошла ошибка");

@@ -1,29 +1,55 @@
 import React, {useCallback} 			from "react";
 import {useNavigate} 					from "react-router";
 import {
-	Form, Input,
+	Form,
 	message, Space,
-	Button, DatePicker
+	Button, DatePicker,
+	Select
 }										from "antd";
 import {
 	CheckOutlined,
 	StopOutlined
 } 										from "@ant-design/icons";
-import useDispatch 						from "ui/shared/hooks/useDispatch";
-import {createProduct} 					from "ui/product/actions";
+import {createProduct} 					from "ui/shared/services/product";
 import {DATE_FORMAT} 					from "ui/shared/consts";
+import {
+	useQuery, useMutation,
+	useQueryClient
+}									 	from "react-query";
+import {getDictionaryList} 				from "ui/shared/services/dictionary";
+import URLS 							from "../../../urls";
+import {QUERY as DICTIONARY_QUERY}		from "ui/dictionary/consts";
+import {QUERY}							from "ui/product/consts";
 
 import styles 							from "./create.css";
 
 const ProductCreate: React.FC = (): React.ReactElement => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const [form] = Form.useForm();
 
+	const {data} = useQuery(DICTIONARY_QUERY.DICTIONARY_LIST, getDictionaryList);
+
+	const mutation = useMutation(createProduct, {
+		onSuccess: (data) => {
+			if (data?.ok) {
+				const id = data.result?.id;
+				void queryClient.invalidateQueries([QUERY.PRODUCT_LIST, `${id}`]);
+				void message.success("Продукт успешно добавлен");
+				navigate(`${URLS.PRODUCT}/${URLS.EDIT}?itemId=${id}`);
+			} else {
+				void message.error(data?.result?.message || "При добавлении продукта произошла ошибка");
+			}
+		},
+		onError: (error: {message?: string}) => {
+			void message.error(error.message || "При добавлении продукта произошла ошибка");
+		}
+	});
+
 	const onFinish = useCallback((data) => {
-		dispatch(createProduct(data));
-	}, [dispatch]);
+		mutation.mutate(data);
+	}, [mutation]);
 
 	const onFinishFailed = useCallback(() => {
 		void message.error('Ошибка валидации!');
@@ -32,6 +58,8 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 	const back = useCallback(() => {
 		navigate(-1);
 	}, [navigate]);
+
+	const items = data?.result?.data;
 
 	return (
 		<div>
@@ -51,9 +79,11 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 					]}
 					className={styles.field}
 				>
-					<Input
+					<Select
 						placeholder="Введите наименование"
 						className={styles.input}
+						options={items && items.map(el => ({value: el.name, label: el.name}))}
+						disabled={!items || !items?.length}
 					/>
 				</Form.Item>
 

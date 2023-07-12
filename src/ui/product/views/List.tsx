@@ -1,26 +1,45 @@
 import React, {useCallback, useMemo} 	from "react";
 import {useNavigate} 					from "react-router";
-import {useQuery} 						from "react-query";
-import {getProductList} 				from "ui/shared/services/product";
+import {
+	useQuery, useMutation,
+	useQueryClient
+} 										from "react-query";
+import {
+	getProductList,
+	removeProductItem
+}						 				from "ui/shared/services/product";
 import URLS								from "../../../urls";
+import {message} 						from "antd";
 import {MONTH_FORMAT} 					from "ui/shared/consts";
 import dayjs							from "dayjs";
 import {
-	EXPIRATION_COLOR
+	EXPIRATION_COLOR, QUERY
 } 										from "ui/product/consts";
 import {getExpirationLvl} 				from "ui/product/helpers";
 import Table							from "ui/ui-kit/Table";
-import useDispatch 						from "ui/shared/hooks/useDispatch";
-import {removeProduct}					from "ui/product/actions";
 import Spinner 							from "ui/ui-kit/Spinner";
 
 import styles 							from "./list.css";
 
 const ProductList: React.FC = (): React.ReactElement => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
-	const {isLoading, error, data} = useQuery('productList', getProductList);
+	const {isLoading, error, data} = useQuery(QUERY.PRODUCT_LIST, getProductList);
+
+	const mutation = useMutation(removeProductItem, {
+		onSuccess: (data) => {
+			if (data?.ok) {
+				void queryClient.invalidateQueries(QUERY.PRODUCT_LIST);
+				void message.success("Элемент справочника успешно удалён");
+			} else {
+				void message.error(data?.result?.message || "При удалении элемента справочника произошла ошибка");
+			}
+		},
+		onError: (error: {message?: string}) => {
+			void message.error(error.message || "При удалении элемента справочника произошла ошибка");
+		}
+	});
 
 	const onPreviewItem = useCallback((id: string) => {
 		navigate(`${URLS.PRODUCT}/${URLS.PREVIEW}?productId=${id}`);
@@ -34,9 +53,9 @@ const ProductList: React.FC = (): React.ReactElement => {
 		navigate(`${URLS.PRODUCT}/${URLS.EDIT}?productId=${id}`);
 	}, [navigate]);
 
-	const onRemoveItem = useCallback((selectedId: string): void => {
-		dispatch(removeProduct(selectedId));
-	}, [dispatch]);
+	const onRemoveItem = useCallback((id: string): void => {
+		mutation.mutate({id});
+	}, [mutation]);
 
 	const columns = useMemo(() => ([
 		{

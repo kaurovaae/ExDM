@@ -14,6 +14,7 @@ import {createDictionaryItem} 			from "ui/shared/services/dictionary";
 import URLS 							from "../../../urls";
 
 import styles 							from "./index.css";
+import {QUERY} from "../consts";
 
 const DictionaryCreate: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
@@ -25,11 +26,11 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 		onSuccess: (data) => {
 			if (data?.ok) {
 				const id = data.result?.id;
-				void queryClient.invalidateQueries(['dictionaryList', `${id}`]);
+				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST, `${id}`]);
 				void message.success("Элемент справочника успешно добавлен");
 				navigate(`${URLS.DICTIONARY}/${URLS.EDIT}?itemId=${id}`);
 			} else {
-				void message.error(data?.result?.message || "При добавлении элемент справочника произошла ошибка");
+				void message.error(data?.result?.message || "При добавлении элемента справочника произошла ошибка");
 			}
 		},
 		onError: (error: {message?: string}) => {

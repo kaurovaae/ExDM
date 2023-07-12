@@ -94,5 +94,5 @@ type RemoveDictionaryItemResponse = {
 export async function removeDictionaryItem(params: RemoveDictionaryItemRequest): Promise<{ok: boolean, result?: RemoveDictionaryItemResponse} | undefined> {
 	const url = getEndpoint() + '/' + params.id;
 
-	return await del<EditDictionaryItemResponse>(url);
+	return await del<RemoveDictionaryItemResponse>(url);
 }

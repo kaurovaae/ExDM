@@ -13,3 +13,7 @@ export const EXPIRATION_COLOR = {
 	[EXPIRATION_LEVEL.MIDDLE]: 'orange',
 	[EXPIRATION_LEVEL.NORMAL]: 'green'
 }
+
+export const QUERY = {
+	PRODUCT_LIST: 'productList'
+}

@@ -14,17 +14,18 @@ import Table							from "ui/ui-kit/Table";
 import URLS 							from "../../../urls";
 import Spinner 							from "ui/ui-kit/Spinner";
 import {message} 						from "antd";
+import {QUERY} 							from "ui/dictionary/consts";
 
 const DictionaryList: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
-	const {isLoading, error, data} = useQuery('dictionaryList', getDictionaryList);
+	const {isLoading, error, data} = useQuery(QUERY.DICTIONARY_LIST, getDictionaryList);
 
 	const mutation = useMutation(removeDictionaryItem, {
 		onSuccess: (data) => {
 			if (data?.ok) {
-				void queryClient.invalidateQueries('dictionaryList');
+				void queryClient.invalidateQueries(QUERY.DICTIONARY_LIST);
 				void message.success("Элемент справочника успешно удалён");
 			} else {
 				void message.error(data?.result?.message || "При удалении элемента справочника произошла ошибка");
