@@ -11,7 +11,8 @@ import {
 import {getExpirationLvl} 				from "ui/product/helpers";
 import Table							from "ui/ui-kit/Table";
 import useDispatch 						from "ui/shared/hooks/useDispatch";
-import {removeItem}						from "ui/product/actions";
+import {removeProduct}					from "ui/product/actions";
+import Spinner 							from "ui/ui-kit/Spinner";
 
 import styles 							from "./list.css";
 
@@ -33,8 +34,8 @@ const ProductList: React.FC = (): React.ReactElement => {
 		navigate(`${URLS.PRODUCT}/${URLS.EDIT}?productId=${id}`);
 	}, [navigate]);
 
-	const onRemoveItem = useCallback((selectedId: string, cb: () => void): void => {
-		dispatch(removeItem(selectedId, cb));
+	const onRemoveItem = useCallback((selectedId: string): void => {
+		dispatch(removeProduct(selectedId));
 	}, [dispatch]);
 
 	const columns = useMemo(() => ([
@@ -58,33 +59,30 @@ const ProductList: React.FC = (): React.ReactElement => {
 	}, []);
 
 	const products = data?.result?.data;
-	const dataSource = products && !!products?.length && products.map(el => ({
+	const dataSource = products?.map(el => ({
 		key: el._id,
 		id: el._id,
 		name: el.name,
 		date: formatDate(el.date)
-	}))
+	})) || [];
 
 	if (isLoading) {
-		return (
-			<div>Loading</div>
-		)
+		return <Spinner />
+	}
+
+	if (error) {
+		return <div>error</div>
 	}
 
 	return (
-		<div>
-			{dataSource && (
-				<Table
-					dataSource={dataSource}
-					columns={columns}
-					onPreview={onPreviewItem}
-					onCreate={onCreateItem}
-					onEdit={onEditItem}
-					onRemove={onRemoveItem}
-				/>
-			)}
-			{error && <div>error</div>}
-		</div>
+		<Table
+			dataSource={dataSource}
+			columns={columns}
+			onPreview={onPreviewItem}
+			onCreate={onCreateItem}
+			onEdit={onEditItem}
+			onRemove={onRemoveItem}
+		/>
 	)
 }
 

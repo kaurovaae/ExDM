@@ -26,7 +26,7 @@ async function createProductImpl(data: {name: string, date: string}, callBack?: 
 	}
 }
 
-export function removeItem(id: string, callBack?: () => void) {
+export function removeProduct(id: string) {
 	return (dispatch: Dispatch, getState: GetState): void => {
 	}
 }

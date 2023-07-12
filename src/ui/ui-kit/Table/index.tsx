@@ -20,7 +20,7 @@ interface Props {
 	onPreview: (id: string) => void;
 	onCreate: () => void;
 	onEdit: (id: string) => void;
-	onRemove: (id: string, cb: () => void) => void;
+	onRemove: (id: string) => void;
 	onSelect?: (item: unknown) => void;
 
 	columns: ColumnsType<object>;
@@ -45,13 +45,9 @@ const TableList: React.FC<Props> = (props): React.ReactElement => {
 		onEdit(selectedId);
 	}, [selectedId, onEdit]);
 
-	const cb = useCallback(() => {
-		setSelectedId('');
-	}, []);
-
 	const removeItem = useCallback((): void => {
-		onRemove(selectedId, cb);
-	}, [selectedId, onRemove, cb]);
+		onRemove(selectedId);
+	}, [selectedId, onRemove]);
 
 	const selectItem = useCallback((record) => (): void => {
 		setSelectedId(prev => prev === record.id ? '' : record.id);

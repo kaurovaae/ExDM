@@ -30,7 +30,7 @@ export async function post<T>(url: string, params = {}): Promise<{ok: boolean, r
 	return await doRequest(url, options, true);
 }
 
-export async function update<T>(url: string, params = {}): Promise<{ok: boolean, result?: T} | undefined> {
+export async function put<T>(url: string, params = {}): Promise<{ok: boolean, result?: T} | undefined> {
 	const options = {
 		method: 'PUT',
 		...params

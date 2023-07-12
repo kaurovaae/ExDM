@@ -3,7 +3,7 @@ import {Route, Routes} 				from "react-router";
 import URLS, {ANY} 					from "../../urls";
 import DictionaryContent			from "ui/dictionary/views";
 import DictionaryCreate				from "ui/dictionary/views/Create";
-import DictionaryEdit				from "ui/dictionary/edit";
+import DictionaryEdit				from "ui/dictionary/views/Edit";
 
 const DictionaryBundle: React.FC = (): React.ReactElement => {
     return (

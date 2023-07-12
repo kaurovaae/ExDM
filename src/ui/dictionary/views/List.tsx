@@ -1,17 +1,39 @@
-import React, {useCallback, useMemo} 	from "react";
+import React, {
+	useCallback, useMemo
+} 										from "react";
 import {useNavigate} 					from "react-router";
-import {useQuery} 						from "react-query";
-import {getDictionaryList} 				from "ui/shared/services/dictionary";
+import {
+	useQuery, useQueryClient,
+	useMutation
+}								 		from "react-query";
+import {
+	removeDictionaryItem,
+	getDictionaryList
+}										from "ui/shared/services/dictionary";
 import Table							from "ui/ui-kit/Table";
 import URLS 							from "../../../urls";
-import {removeDictionaryItem} 			from "ui/dictionary/actions";
-import useDispatch 						from "ui/shared/hooks/useDispatch";
+import Spinner 							from "ui/ui-kit/Spinner";
+import {message} 						from "antd";
 
 const DictionaryList: React.FC = (): React.ReactElement => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const {isLoading, error, data} = useQuery('dictionaryList', getDictionaryList);
+
+	const mutation = useMutation(removeDictionaryItem, {
+		onSuccess: (data) => {
+			if (data?.ok) {
+				void queryClient.invalidateQueries('dictionaryList');
+				void message.success("Элемент справочника успешно удалён");
+			} else {
+				void message.error(data?.result?.message || "При удалении элемента справочника произошла ошибка");
+			}
+		},
+		onError: (error: {message?: string}) => {
+			void message.error(error.message || "При удалении элемента справочника произошла ошибка");
+		}
+	});
 
 	const onPreviewItem = useCallback((id: string) => {
 		navigate(`${URLS.DICTIONARY}/${URLS.PREVIEW}?itemId=${id}`);
@@ -25,9 +47,9 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 		navigate(`${URLS.DICTIONARY}/${URLS.EDIT}?itemId=${id}`);
 	}, [navigate]);
 
-	const onRemoveItem = useCallback((selectedId: string, cb: () => void): void => {
-		dispatch(removeDictionaryItem(selectedId, cb));
-	}, [dispatch]);
+	const onRemoveItem = useCallback((id: string): void => {
+		mutation.mutate({id});
+	}, [mutation]);
 
 	const columns = useMemo(() => ([
 		{
@@ -38,32 +60,29 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 	]), []);
 
 	const products = data?.result?.data;
-	const dataSource = products && !!products?.length && products.map(el => ({
+	const dataSource = products?.map(el => ({
 		key: el._id,
 		id: el._id,
 		name: el.name
-	}))
+	})) || [];
 
 	if (isLoading) {
-		return (
-			<div>Loading</div>
-		)
+		return <Spinner />
+	}
+
+	if (error) {
+		return <div>error</div>
 	}
 
 	return (
-		<div>
-			{error && <div>error</div>}
-			{dataSource && (
-				<Table
-					dataSource={dataSource}
-					columns={columns}
-					onPreview={onPreviewItem}
-					onCreate={onCreateItem}
-					onEdit={onEditItem}
-					onRemove={onRemoveItem}
-				/>
-			)}
-		</div>
+		<Table
+			dataSource={dataSource}
+			columns={columns}
+			onPreview={onPreviewItem}
+			onCreate={onCreateItem}
+			onEdit={onEditItem}
+			onRemove={onRemoveItem}
+		/>
 	)
 }
 
