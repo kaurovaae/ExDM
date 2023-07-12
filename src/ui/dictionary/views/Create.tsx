@@ -9,20 +9,37 @@ import {
 	CheckOutlined,
 	StopOutlined
 } 										from "@ant-design/icons";
-import useDispatch 						from "ui/shared/hooks/useDispatch";
-import {createDictionaryItem} 			from "ui/dictionary/actions";
+import {useMutation, useQueryClient} 	from "react-query";
+import {createDictionaryItem} 			from "ui/shared/services/dictionary";
+import URLS 							from "../../../urls";
 
 import styles 							from "./index.css";
 
 const DictionaryCreate: React.FC = (): React.ReactElement => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const [form] = Form.useForm();
 
+	const mutation = useMutation(createDictionaryItem, {
+		onSuccess: (data) => {
+			if (data?.ok) {
+				const id = data.result?.id;
+				void queryClient.invalidateQueries(['dictionaryList', `${id}`]);
+				void message.success("Элемент справочника успешно добавлен");
+				navigate(`${URLS.DICTIONARY}/${URLS.EDIT}?itemId=${id}`);
+			} else {
+				void message.error(data?.result?.message || "При добавлении элемент справочника произошла ошибка");
+			}
+		},
+		onError: (error: {message?: string}) => {
+			void message.error(error.message || "При изменении элемента справочника произошла ошибка");
+		}
+	});
+
 	const onFinish = useCallback((data) => {
-		dispatch(createDictionaryItem(data));
-	}, [dispatch]);
+		mutation.mutate(data);
+	}, [mutation]);
 
 	const onFinishFailed = useCallback(() => {
 		void message.error('Ошибка валидации!');
