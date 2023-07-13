@@ -30,7 +30,7 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 		enabled: !!id
 	});
 
-	const initial = useMemo(() => data?.result?.data, [data]);
+	const initial = useMemo(() => data?.result?.data || {}, [data]);
 
 	const [form] = Form.useForm();
 
@@ -77,7 +77,7 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 				autoComplete="off"
 				labelCol={{span: 8}}
 				wrapperCol={{span: 16}}
-				initialValues={initial ? {...initial} : {}}
+				initialValues={initial}
 			>
 				<Form.Item
 					name="name"

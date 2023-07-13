@@ -15,7 +15,8 @@ export const EXPIRATION_COLOR = {
 }
 
 export const QUERY = {
-	PRODUCT_LIST: 'productList'
+	PRODUCT_LIST: 'productList',
+	PRODUCT_ITEM: 'productItem'
 }
 
 export const MESSAGE = {

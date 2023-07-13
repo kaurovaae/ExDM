@@ -19,13 +19,16 @@ import {
 import {getExpirationLvl} 				from "ui/product/helpers";
 import Table							from "ui/ui-kit/Table";
 import Spinner 							from "ui/ui-kit/Spinner";
+import {QUERY as DICTIONARY_QUERY} 		from "ui/dictionary/consts";
+import {getDictionaryList} 				from "ui/shared/services/dictionary";
 
-import styles 							from "./list.css";
+import styles 							from "./index.css";
 
 const ProductList: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
+	const {isLoading: dIsLoading, error: dError, data: dData} = useQuery(DICTIONARY_QUERY.DICTIONARY_LIST, getDictionaryList);
 	const {isLoading, error, data} = useQuery(QUERY.PRODUCT_LIST, getProductList);
 
 	const mutation = useMutation(removeProductItem, {
@@ -78,19 +81,21 @@ const ProductList: React.FC = (): React.ReactElement => {
 		return <span className={styles[EXPIRATION_COLOR[lvl]]}>{formattedDate}</span>;
 	}, []);
 
-	const products = data?.result?.data;
-	const dataSource = products?.map(el => ({
+	const products = useMemo(() => data?.result?.data, [data]);
+	const dictionary = useMemo(() => dData?.result?.data, [dData]);
+
+	const dataSource = useMemo(() => products?.map(el => ({
 		key: el._id,
 		id: el._id,
-		name: el.name,
+		name: dictionary?.find(it => it._id === el.dictionaryId)?.name,
 		date: formatDate(el.date)
-	})) || [];
+	})) || [], [products, dictionary, formatDate]);
 
-	if (isLoading) {
+	if (isLoading || dIsLoading) {
 		return <Spinner />
 	}
 
-	if (error) {
+	if (error || dError) {
 		return <div>error</div>
 	}
 

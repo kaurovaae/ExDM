@@ -28,7 +28,7 @@ interface DictionaryItem extends BaseElementInfo {
 }
 
 type DictionaryItemResponse = {
-	data: DictionaryItem[];
+	data: DictionaryItem;
 	success: boolean;
 	message: string;
 };
