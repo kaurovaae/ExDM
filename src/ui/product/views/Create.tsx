@@ -1,4 +1,4 @@
-import React, {useCallback} 			from "react";
+import React, {useCallback, useState} 	from "react";
 import {useNavigate} 					from "react-router";
 import {
 	Form,
@@ -19,13 +19,16 @@ import {
 import {getDictionaryList} 				from "ui/shared/services/dictionary";
 import URLS 							from "../../../urls";
 import {QUERY as DICTIONARY_QUERY}		from "ui/dictionary/consts";
-import {QUERY}							from "ui/product/consts";
+import {QUERY, MESSAGE} 				from "ui/product/consts";
+import dayjs							from "dayjs";
 
 import styles 							from "./create.css";
 
 const ProductCreate: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+
+	const [productType, setProductType] = useState<{name: string, id: string}>({name: '', id: ''});
 
 	const [form] = Form.useForm();
 
@@ -36,20 +39,24 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 			if (data?.ok) {
 				const id = data.result?.id;
 				void queryClient.invalidateQueries([QUERY.PRODUCT_LIST, `${id}`]);
-				void message.success("Продукт успешно добавлен");
+				void message.success(MESSAGE.SUCCESS_CREATE);
 				navigate(`${URLS.PRODUCT}/${URLS.EDIT}?itemId=${id}`);
 			} else {
-				void message.error(data?.result?.message || "При добавлении продукта произошла ошибка");
+				void message.error(data?.result?.message || MESSAGE.ERROR_CREATE);
 			}
 		},
 		onError: (error: {message?: string}) => {
-			void message.error(error.message || "При добавлении продукта произошла ошибка");
+			void message.error(error.message || MESSAGE.ERROR_CREATE);
 		}
 	});
 
+	const onChange = useCallback((value, option) => {
+		setProductType({name: option.label, id: value})
+	}, []);
+
 	const onFinish = useCallback((data) => {
-		mutation.mutate(data);
-	}, [mutation]);
+		mutation.mutate({...data, ...productType});
+	}, [mutation, productType]);
 
 	const onFinishFailed = useCallback(() => {
 		void message.error('Ошибка валидации!');
@@ -58,6 +65,10 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 	const back = useCallback(() => {
 		navigate(-1);
 	}, [navigate]);
+
+	const disabledDate = useCallback((current): boolean => {
+		return current && current < dayjs().startOf('day');
+	}, []);
 
 	const items = data?.result?.data;
 
@@ -82,8 +93,9 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 					<Select
 						placeholder="Введите наименование"
 						className={styles.input}
-						options={items && items.map(el => ({value: el.name, label: el.name}))}
+						options={items && items.map(el => ({value: el._id, label: el.name}))}
 						disabled={!items || !items?.length}
+						onChange={onChange}
 					/>
 				</Form.Item>
 
@@ -99,6 +111,7 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 						placeholder="Введите срок действия"
 						format={DATE_FORMAT}
 						className={styles.input}
+						disabledDate={disabledDate}
 					/>
 				</Form.Item>
 

@@ -12,9 +12,9 @@ import {
 import {useMutation, useQueryClient} 	from "react-query";
 import {createDictionaryItem} 			from "ui/shared/services/dictionary";
 import URLS 							from "../../../urls";
+import {QUERY, MESSAGE} 				from "ui/dictionary/consts";
 
 import styles 							from "./index.css";
-import {QUERY} from "../consts";
 
 const DictionaryCreate: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
@@ -27,14 +27,14 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 			if (data?.ok) {
 				const id = data.result?.id;
 				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST, `${id}`]);
-				void message.success("Элемент справочника успешно добавлен");
+				void message.success(MESSAGE.SUCCESS_CREATE);
 				navigate(`${URLS.DICTIONARY}/${URLS.EDIT}?itemId=${id}`);
 			} else {
-				void message.error(data?.result?.message || "При добавлении элемента справочника произошла ошибка");
+				void message.error(data?.result?.message || MESSAGE.ERROR_CREATE);
 			}
 		},
 		onError: (error: {message?: string}) => {
-			void message.error(error.message || "При изменении элемента справочника произошла ошибка");
+			void message.error(error.message || MESSAGE.ERROR_CREATE);
 		}
 	});
 

@@ -15,7 +15,7 @@ import {
 	message, Space
 } 										from "antd";
 import {CheckOutlined, StopOutlined} 	from "@ant-design/icons";
-import {QUERY} 							from "ui/dictionary/consts";
+import {QUERY, MESSAGE} 				from "ui/dictionary/consts";
 
 import styles 							from "./index.css";
 
@@ -38,13 +38,13 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 		onSuccess: (data) => {
 			if (data?.ok) {
 				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST, `${id}`]);
-				void message.success("Элемент справочника успешно изменён");
+				void message.success(MESSAGE.SUCCESS_EDIT);
 			} else {
-				void message.error(data?.result?.message || "При изменении элемента справочника произошла ошибка");
+				void message.error(data?.result?.message || MESSAGE.ERROR_EDIT);
 			}
 		},
 		onError: (error: {message?: string}) => {
-			void message.error(error.message || "При изменении элемента справочника произошла ошибка");
+			void message.error(error.message || MESSAGE.ERROR_EDIT);
 		}
 	});
 

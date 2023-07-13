@@ -13,7 +13,8 @@ import {message} 						from "antd";
 import {MONTH_FORMAT} 					from "ui/shared/consts";
 import dayjs							from "dayjs";
 import {
-	EXPIRATION_COLOR, QUERY
+	EXPIRATION_COLOR, QUERY,
+	MESSAGE
 } 										from "ui/product/consts";
 import {getExpirationLvl} 				from "ui/product/helpers";
 import Table							from "ui/ui-kit/Table";
@@ -31,13 +32,13 @@ const ProductList: React.FC = (): React.ReactElement => {
 		onSuccess: (data) => {
 			if (data?.ok) {
 				void queryClient.invalidateQueries(QUERY.PRODUCT_LIST);
-				void message.success("Элемент справочника успешно удалён");
+				void message.success(MESSAGE.SUCCESS_REMOVE);
 			} else {
-				void message.error(data?.result?.message || "При удалении элемента справочника произошла ошибка");
+				void message.error(data?.result?.message || MESSAGE.ERROR_REMOVE);
 			}
 		},
 		onError: (error: {message?: string}) => {
-			void message.error(error.message || "При удалении элемента справочника произошла ошибка");
+			void message.error(error.message || MESSAGE.ERROR_REMOVE);
 		}
 	});
 

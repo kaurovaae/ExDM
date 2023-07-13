@@ -14,7 +14,7 @@ import Table							from "ui/ui-kit/Table";
 import URLS 							from "../../../urls";
 import Spinner 							from "ui/ui-kit/Spinner";
 import {message} 						from "antd";
-import {QUERY} 							from "ui/dictionary/consts";
+import {QUERY, MESSAGE} 				from "ui/dictionary/consts";
 
 const DictionaryList: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
@@ -26,13 +26,13 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 		onSuccess: (data) => {
 			if (data?.ok) {
 				void queryClient.invalidateQueries(QUERY.DICTIONARY_LIST);
-				void message.success("Элемент справочника успешно удалён");
+				void message.success(MESSAGE.SUCCESS_REMOVE);
 			} else {
-				void message.error(data?.result?.message || "При удалении элемента справочника произошла ошибка");
+				void message.error(data?.result?.message || MESSAGE.ERROR_REMOVE);
 			}
 		},
 		onError: (error: {message?: string}) => {
-			void message.error(error.message || "При удалении элемента справочника произошла ошибка");
+			void message.error(error.message || MESSAGE.ERROR_REMOVE);
 		}
 	});
 

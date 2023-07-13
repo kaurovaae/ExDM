@@ -1,5 +1,3 @@
-import {message}					from "antd";
-
 const headers = {
 	'Accept': 'application/json',
 	'Content-Type': 'application/json'
@@ -27,7 +25,7 @@ export async function post<T>(url: string, params = {}): Promise<{ok: boolean, r
 		...params
 	};
 
-	return await doRequest(url, options, true);
+	return await doRequest(url, options);
 }
 
 export async function put<T>(url: string, params = {}): Promise<{ok: boolean, result?: T} | undefined> {
@@ -36,7 +34,7 @@ export async function put<T>(url: string, params = {}): Promise<{ok: boolean, re
 		...params
 	};
 
-	return await doRequest(url, options, true);
+	return await doRequest(url, options);
 }
 
 export async function del<T>(url: string, params = {}): Promise<{ok: boolean, result?: T} | undefined> {
@@ -45,10 +43,10 @@ export async function del<T>(url: string, params = {}): Promise<{ok: boolean, re
 		...params
 	};
 
-	return await doRequest(url, options, true);
+	return await doRequest(url, options);
 }
 
-async function doRequest<T>(url: string, params: RequestInit = {}, send?: boolean): Promise<{ok: boolean, result?: T} | undefined> {
+async function doRequest<T>(url: string, params: RequestInit = {}): Promise<{ok: boolean, result?: T} | undefined> {
 	const options = {
 		headers,
 		...params,
@@ -57,9 +55,13 @@ async function doRequest<T>(url: string, params: RequestInit = {}, send?: boolea
 
 	let result;
 	try {
-		result = await (await fetch(url, options)).json();
+		const res = await fetch(url, options);
+		if (res.status === 400) {
+			throw new Error(res.statusText);
+		}
+
+		result = await res.json();
 	} catch (err) {
-		void message.error(`При ${send ? 'отправлении' : 'получении'} данных произошла ошибка`);
 		return {ok: false}
 	}
 
