@@ -22,13 +22,17 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 
 	const [form] = Form.useForm();
 
+	const onSuccess = useCallback(() => {
+		void message.success(MESSAGE.SUCCESS_CREATE);
+		navigate(URLS.DICTIONARY);
+	}, [navigate]);
+
 	const mutation = useMutation(createDictionaryItem, {
 		onSuccess: (data) => {
 			if (data?.ok) {
 				const id = data.result?.id;
 				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST, `${id}`]);
-				void message.success(MESSAGE.SUCCESS_CREATE);
-				navigate(`${URLS.DICTIONARY}/${URLS.EDIT}?itemId=${id}`);
+				onSuccess();
 			} else {
 				void message.error(data?.result?.message || MESSAGE.ERROR_CREATE);
 			}

@@ -34,13 +34,17 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 
 	const items = useMemo(() => dData?.result?.data, [dData]);
 
+	const onSuccess = useCallback(() => {
+		void message.success(MESSAGE.SUCCESS_CREATE);
+		navigate(URLS.PRODUCT);
+	}, [navigate]);
+
 	const mutation = useMutation(createProduct, {
 		onSuccess: (data) => {
 			if (data?.ok) {
 				const id = data.result?.id;
 				void queryClient.invalidateQueries([QUERY.PRODUCT_LIST, `${id}`]);
-				void message.success(MESSAGE.SUCCESS_CREATE);
-				navigate(`${URLS.PRODUCT}/${URLS.EDIT}?itemId=${id}`);
+				onSuccess();
 			} else {
 				void message.error(data?.result?.message || MESSAGE.ERROR_CREATE);
 			}
