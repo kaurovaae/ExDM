@@ -61,11 +61,14 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 	]), []);
 
 	const products = data?.result?.data;
-	const dataSource = products?.map(el => ({
-		key: el._id,
-		id: el._id,
-		name: el.name
-	})) || [];
+	const dataSource = useMemo(() => (products || [])
+		?.map(el => ({
+			key: el._id,
+			id: el._id,
+			name: el.name
+		}))
+		?.sort((a, b) => a.name.localeCompare(b.name))
+	, [products]);
 
 	if (isLoading) {
 		return <Spinner />
