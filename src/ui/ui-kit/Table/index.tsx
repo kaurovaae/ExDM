@@ -26,10 +26,12 @@ interface Props {
 	columns: ColumnsType<object>;
 	dataSource?: readonly object[];
 	pagination?: TablePaginationConfig;
+
+	beforeTable?: string | React.ReactElement | React.ReactElement[];
 }
 
 const TableList: React.FC<Props> = (props): React.ReactElement => {
-	const {disabled, onPreview, onCreate, onEdit, onRemove, onSelect, columns, dataSource, pagination} = props;
+	const {disabled, onPreview, onCreate, onEdit, onRemove, onSelect, columns, dataSource, pagination, beforeTable} = props;
 
 	const [selectedId, setSelectedId] = useState<string>('');
 
@@ -73,6 +75,8 @@ const TableList: React.FC<Props> = (props): React.ReactElement => {
 				onRemove={removeItem}
 				disabled={dis}
 			/>
+
+			{beforeTable}
 
 			<div className={styles.content}>
 				{!Array.isArray(dataSource)

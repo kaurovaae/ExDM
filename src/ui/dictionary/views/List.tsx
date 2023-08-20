@@ -1,5 +1,6 @@
 import React, {
-	useCallback, useMemo
+	useCallback, useMemo,
+	useState
 } 										from "react";
 import {useNavigate} 					from "react-router";
 import {
@@ -14,10 +15,14 @@ import {formatProductName} 				from "ui/shared/helpers";
 import Table							from "ui/ui-kit/Table";
 import URLS 							from "../../../urls";
 import Spinner 							from "ui/ui-kit/Spinner";
-import {message} 						from "antd";
+import {message, Form, Input} 			from "antd";
 import {QUERY, MESSAGE} 				from "ui/dictionary/consts";
 
+import styles 							from './index.css';
+
 const DictionaryList: React.FC = (): React.ReactElement => {
+	const [name, setName] = useState<string>("");
+
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
@@ -57,9 +62,12 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 		{
 			title: "Наименование",
 			dataIndex: "name",
-			key: "name"
+			key: "name",
+			filteredValue: [name],
+			onFilter: (value: string, record) => record.name.toLowerCase().startsWith(value.toLowerCase()),
+			sorter: (a, b) => a.name.localeCompare(b.name)
 		}
-	]), []);
+	]), [name]);
 
 	const products = data?.result?.data;
 	const dataSource = useMemo(() => (products || [])
@@ -70,6 +78,10 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 		}))
 		?.sort((a, b) => a.name.localeCompare(b.name))
 	, [products]);
+
+	const updateFilter = useCallback((changedValues, allValues) => {
+		setName(changedValues.name);
+	}, [setName]);
 
 	if (isLoading) {
 		return <Spinner />
@@ -87,6 +99,15 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 			onCreate={onCreateItem}
 			onEdit={onEditItem}
 			onRemove={onRemoveItem}
+			beforeTable={(
+				<div className={styles.filters}>
+					<Form name="nameSearch" initialValues={{}} onValuesChange={updateFilter}>
+						<Form.Item label="Поиск по наименованию" name="name">
+							<Input />
+						</Form.Item>
+					</Form>
+				</div>
+			)}
 		/>
 	)
 }
