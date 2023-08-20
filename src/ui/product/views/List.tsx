@@ -85,13 +85,16 @@ const ProductList: React.FC = (): React.ReactElement => {
 	const dictionary = useMemo(() => dData?.result?.data, [dData]);
 
 	const dataSource = useMemo(() => (products || [])
-		?.map(el => ({
-			key: el._id,
-			id: el._id,
-			name: dictionary?.find(it => it._id === el.dictionaryId)?.name,
-			date: formatDate(el.date),
-			fullDate: el.date
-		}))
+		?.map(el => {
+			const item = dictionary?.find(it => it._id === el.dictionaryId);
+			return {
+				key: el._id,
+				id: el._id,
+				name: `${item?.name}${item?.mfr ? ' / ' + item.mfr : ''}${item?.measuring ? ' / ' + item.measuring : ''}`,
+				date: formatDate(el.date),
+				fullDate: el.date
+			}
+		})
 		?.sort((a, b) => {
 			const lvlA = getExpirationLvl(a.fullDate);
 			const lvlB = getExpirationLvl(b.fullDate);

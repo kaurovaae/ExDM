@@ -82,7 +82,10 @@ const ProductPreview: React.FC = (): React.ReactElement => {
 					<Select
 						placeholder="Введите наименование"
 						className={styles.input}
-						options={dInitial && dInitial.map(el => ({value: el._id, label: el.name}))}
+						options={dInitial && dInitial.map(el => ({
+							value: el._id,
+							label: `${el?.name}${el?.mfr ? ' / ' + el.mfr : ''}${el?.measuring ? ' / ' + el.measuring : ''}`
+						}))}
 						disabled
 					/>
 				</Form.Item>

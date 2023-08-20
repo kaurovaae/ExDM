@@ -24,11 +24,6 @@ export async function getProductList(): Promise<{ok: boolean, result?: ProductLi
 	return await get<ProductListResponse>(url);
 }
 
-interface ProductItem extends BaseElementInfo {
-	dictionaryId: string;
-	date: string;
-}
-
 type ProductItemResponse = {
 	data: ProductItem;
 	success: boolean;

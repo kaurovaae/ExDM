@@ -65,7 +65,7 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 		?.map(el => ({
 			key: el._id,
 			id: el._id,
-			name: el.name
+			name: `${el.name}${el.mfr ? ' / ' + el.mfr : ''}${el.measuring ? ' / ' + el.measuring : ''}`
 		}))
 		?.sort((a, b) => a.name.localeCompare(b.name))
 	, [products]);

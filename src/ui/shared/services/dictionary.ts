@@ -9,6 +9,8 @@ function getEndpoint(): string {
 
 interface DictionaryItem extends BaseElementInfo {
 	name: string;
+	mfr: string;
+	measuring?: string;
 }
 
 type DictionaryListResponse = {
@@ -21,10 +23,6 @@ export async function getDictionaryList(): Promise<{ok: boolean, result?: Dictio
 	const url = getEndpoint();
 
 	return await get<DictionaryListResponse>(url);
-}
-
-interface DictionaryItem extends BaseElementInfo {
-	name: string;
 }
 
 type DictionaryItemResponse = {
@@ -42,6 +40,8 @@ export async function getDictionaryItem(params: {queryKey: string[]}): Promise<{
 
 type CreateDictionaryItemRequest = {
 	name: string;
+	mfr: string;
+	measuring?: string;
 };
 
 type CreateDictionaryItemResponse = {
@@ -63,6 +63,8 @@ export async function createDictionaryItem(params: CreateDictionaryItemRequest):
 type EditDictionaryItemRequest = {
 	id: string;
 	name: string;
+	mfr: string;
+	measuring?: string;
 };
 
 type EditDictionaryItemResponse = {

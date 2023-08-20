@@ -78,6 +78,34 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 					/>
 				</Form.Item>
 
+				<Form.Item
+					name="mfr"
+					label="Производитель"
+					rules={[
+						{required: true, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
+					]}
+					className={styles.field}
+				>
+					<Input
+						placeholder="Укажите производителя"
+						className={styles.input}
+					/>
+				</Form.Item>
+
+				<Form.Item
+					name="measuring"
+					label="Дозировка"
+					rules={[
+						{required: true, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
+					]}
+					className={styles.field}
+				>
+					<Input
+						placeholder="Укажите дозировку"
+						className={styles.input}
+					/>
+				</Form.Item>
+
 				<Form.Item>
 					<Space>
 						<Button

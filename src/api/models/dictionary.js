@@ -6,6 +6,14 @@ const DictionaryItem = new Schema(
         name: {
             type: String,
             required: true
+        },
+        mfr: {
+            type: String,
+            required: true
+        },
+		measuring: {
+            type: String,
+            required: false
         }
     },
     {

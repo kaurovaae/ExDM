@@ -63,6 +63,8 @@ updateItem = async (req, res) => {
 
         if (item) {
 			item.name = body.name
+			item.mfr = body.mfr
+			item.measuring = body.measuring
 			item
                 .save()
                 .then(() => {
