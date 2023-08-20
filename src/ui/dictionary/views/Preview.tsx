@@ -6,15 +6,18 @@ import {
 	useQuery
 } 										from "react-query";
 import {
+	DictionaryItem,
 	getDictionaryItem
 } 										from "ui/shared/services/dictionary";
 import {
-	Button, Form, Input,
-	Space
+	Button, Form,
+	Input, Space
 } 										from "antd";
 import {EditOutlined} 					from "@ant-design/icons";
 import {QUERY}			 				from "ui/dictionary/consts";
 import URLS 							from "../../../urls";
+import SelectInput 						from "ui/ui-kit/SelectInput";
+import {MEASURING} 						from "ui/shared/consts";
 
 import styles 							from "./index.css";
 
@@ -28,7 +31,7 @@ const DictionaryPreview: React.FC = (): React.ReactElement => {
 		enabled: !!id
 	});
 
-	const initial = useMemo(() => data?.result?.data || {}, [data]);
+	const initial = useMemo(() => data?.result?.data || {} as DictionaryItem, [data]);
 
 	const [form] = Form.useForm();
 
@@ -84,15 +87,18 @@ const DictionaryPreview: React.FC = (): React.ReactElement => {
 				</Form.Item>
 
 				<Form.Item
-					name="measuring"
+					name="measuringCount"
 					label="Мера измерения"
-					rules={[
-						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
-					]}
 					className={styles.field}
 				>
-					<Input
-						placeholder="Количество капсул, таблеток, и тд в упаковке"
+					<SelectInput
+						placeholder="Количество в упаковке"
+						options={Object.values(MEASURING)}
+						min={1}
+						selectOptions={{
+							defaultValue: initial.measuring,
+							disabled: true
+						}}
 						className={styles.input}
 						disabled
 					/>
@@ -101,9 +107,6 @@ const DictionaryPreview: React.FC = (): React.ReactElement => {
 				<Form.Item
 					name="dose"
 					label="Дозировка"
-					rules={[
-						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
-					]}
 					className={styles.field}
 				>
 					<Input

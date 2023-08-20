@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} 	from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate} 					from "react-router";
 import {useSearchParams} 				from "react-router-dom";
 import Spinner 							from "ui/ui-kit/Spinner";
@@ -7,6 +7,7 @@ import {
 	useQueryClient
 } 										from "react-query";
 import {
+	DictionaryItem,
 	editDictionaryItem,
 	getDictionaryItem
 } 										from "ui/shared/services/dictionary";
@@ -16,6 +17,8 @@ import {
 } 										from "antd";
 import {CheckOutlined, StopOutlined} 	from "@ant-design/icons";
 import {QUERY, MESSAGE} 				from "ui/dictionary/consts";
+import SelectInput 						from "ui/ui-kit/SelectInput";
+import {MEASURING} 						from "ui/shared/consts";
 
 import styles 							from "./index.css";
 
@@ -30,7 +33,15 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 		enabled: !!id
 	});
 
-	const initial = useMemo(() => data?.result?.data || {}, [data]);
+	const initial = useMemo(() => data?.result?.data || {} as DictionaryItem, [data]);
+
+	const [measuringCount, setMeasuringCount] = useState<number>();
+	const [measuring, setMeasuring] = useState<string>();
+
+	useEffect(() => {
+		setMeasuringCount(initial?.measuringCount);
+		setMeasuring(initial?.measuring);
+	}, [initial]);
 
 	const [form] = Form.useForm();
 
@@ -49,9 +60,17 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 		}
 	});
 
+	const onChange = useCallback((value) => {
+		setMeasuringCount(value);
+	}, []);
+
+	const onSelectChange = useCallback((value) => {
+		setMeasuring(value);
+	}, []);
+
 	const onFinish = useCallback((data) => {
-		mutation.mutate({id, ...data});
-	}, [mutation, id]);
+		mutation.mutate({id, ...data, measuring, measuringCount});
+	}, [mutation, id, measuring, measuringCount]);
 
 	const onFinishFailed = useCallback(() => {
 		void message.error('Ошибка валидации!');
@@ -109,25 +128,26 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 				</Form.Item>
 
 				<Form.Item
-					name="measuring"
+					name="measuringCount"
 					label="Мера измерения"
-					rules={[
-						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
-					]}
 					className={styles.field}
 				>
-					<Input
-						placeholder="Количество капсул, таблеток, и тд в упаковке"
+					<SelectInput
+						placeholder="Количество в упаковке"
+						options={Object.values(MEASURING)}
+						onChange={onChange}
+						min={1}
 						className={styles.input}
+						selectOptions={{
+							defaultValue: initial.measuring,
+							onChange: onSelectChange
+						}}
 					/>
 				</Form.Item>
 
 				<Form.Item
 					name="dose"
 					label="Дозировка"
-					rules={[
-						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
-					]}
 					className={styles.field}
 				>
 					<Input

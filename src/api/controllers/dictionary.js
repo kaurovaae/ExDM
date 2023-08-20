@@ -65,6 +65,7 @@ updateItem = async (req, res) => {
 			item.name = body.name
 			item.mfr = body.mfr
 			item.measuring = body.measuring
+			item.measuringCount = body.measuringCount
 			item.dose = body.dose
 			item
                 .save()

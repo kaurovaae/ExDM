@@ -5,17 +5,17 @@ export function formatProductName(item?: DictionaryItem): string {
 		return '';
 	}
 
-	let name = item?.name;
+	let name = item.name;
 
-	if (item?.dose) {
+	if (item.dose) {
 		name += `, ${item.dose}`;
 	}
 
-	if (item?.measuring) {
-		name += `, ${item.measuring}`;
+	if (item.measuringCount && item.measuring) {
+		name += `, ${item.measuringCount} ${item.measuring}`;
 	}
 
-	if (item?.mfr) {
+	if (item.mfr) {
 		name += ` / «${item.mfr}»`;
 	}
 

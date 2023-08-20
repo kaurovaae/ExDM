@@ -1,4 +1,4 @@
-import React, {useCallback} 			from "react";
+import React, {useCallback, useState} 	from "react";
 import {useNavigate} 					from "react-router";
 import {
 	Form, Input,
@@ -12,7 +12,9 @@ import {
 import {useMutation, useQueryClient} 	from "react-query";
 import {createDictionaryItem} 			from "ui/shared/services/dictionary";
 import URLS 							from "../../../urls";
+import {MEASURING}						from "ui/shared/consts";
 import {QUERY, MESSAGE} 				from "ui/dictionary/consts";
+import SelectInput 						from "ui/ui-kit/SelectInput";
 
 import styles 							from "./index.css";
 
@@ -21,6 +23,9 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 	const queryClient = useQueryClient();
 
 	const [form] = Form.useForm();
+
+	const [measuringCount, setMeasuringCount] = useState<number>(1);
+	const [measuring, setMeasuring] = useState<string>(MEASURING.COUNT);
 
 	const onSuccess = useCallback(() => {
 		void message.success(MESSAGE.SUCCESS_CREATE);
@@ -42,9 +47,17 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 		}
 	});
 
+	const onChange = useCallback((value) => {
+		setMeasuringCount(value);
+	}, []);
+
+	const onSelectChange = useCallback((value) => {
+		setMeasuring(value);
+	}, []);
+
 	const onFinish = useCallback((data) => {
-		mutation.mutate(data);
-	}, [mutation]);
+		mutation.mutate({...data, measuring, measuringCount});
+	}, [mutation, measuring, measuringCount]);
 
 	const onFinishFailed = useCallback(() => {
 		void message.error('Ошибка валидации!');
@@ -93,25 +106,26 @@ const DictionaryCreate: React.FC = (): React.ReactElement => {
 				</Form.Item>
 
 				<Form.Item
-					name="measuring"
+					name="measuringCount"
 					label="Мера измерения"
-					rules={[
-						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
-					]}
 					className={styles.field}
 				>
-					<Input
-						placeholder="Количество капсул, таблеток, и тд в упаковке"
+					<SelectInput
+						placeholder="Количество в упаковке"
+						options={Object.values(MEASURING)}
+						onChange={onChange}
+						min={1}
 						className={styles.input}
+						selectOptions={{
+							defaultValue: measuring,
+							onChange: onSelectChange
+						}}
 					/>
 				</Form.Item>
 
 				<Form.Item
 					name="dose"
 					label="Дозировка"
-					rules={[
-						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
-					]}
 					className={styles.field}
 				>
 					<Input

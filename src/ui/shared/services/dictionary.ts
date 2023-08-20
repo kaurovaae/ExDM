@@ -10,7 +10,8 @@ function getEndpoint(): string {
 export interface DictionaryItem extends BaseElementInfo {
 	name: string;
 	mfr: string;
-	measuring?: string; // 20 capsules
+	measuringCount?: number; // 20
+	measuring?: string; // capsules
 	dose?: string; // 500mg
 }
 
@@ -42,6 +43,7 @@ export async function getDictionaryItem(params: {queryKey: string[]}): Promise<{
 type CreateDictionaryItemRequest = {
 	name: string;
 	mfr: string;
+	measuringCount?: number;
 	measuring?: string;
 	dose?: string;
 };
@@ -66,6 +68,7 @@ type EditDictionaryItemRequest = {
 	id: string;
 	name: string;
 	mfr: string;
+	measuringCount?: number;
 	measuring?: string;
 	dose?: string;
 };

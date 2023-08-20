@@ -15,6 +15,10 @@ const DictionaryItem = new Schema(
             type: String,
             required: false
         },
+		measuringCount: {
+            type: Number,
+            required: false
+        },
 		dose: {
             type: String,
             required: false
