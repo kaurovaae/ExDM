@@ -17,6 +17,7 @@ import {
 	useQueryClient
 }									 	from "react-query";
 import {getDictionaryList} 				from "ui/shared/services/dictionary";
+import {formatProductName} 				from "ui/shared/helpers";
 import URLS 							from "../../../urls";
 import {QUERY as DICTIONARY_QUERY}		from "ui/dictionary/consts";
 import {QUERY, MESSAGE} 				from "ui/product/consts";
@@ -93,7 +94,7 @@ const ProductCreate: React.FC = (): React.ReactElement => {
 						className={styles.input}
 						options={items && items.map(el => ({
 							value: el._id,
-							label: `${el?.name}${el?.mfr ? ' / ' + el.mfr : ''}${el?.measuring ? ' / ' + el.measuring : ''}`
+							label: formatProductName(el)
 						}))}
 						disabled={!items || !items?.length}
 					/>

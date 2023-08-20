@@ -21,6 +21,7 @@ import Table							from "ui/ui-kit/Table";
 import Spinner 							from "ui/ui-kit/Spinner";
 import {QUERY as DICTIONARY_QUERY} 		from "ui/dictionary/consts";
 import {getDictionaryList} 				from "ui/shared/services/dictionary";
+import {formatProductName} 				from "ui/shared/helpers";
 
 import styles 							from "./index.css";
 
@@ -90,7 +91,7 @@ const ProductList: React.FC = (): React.ReactElement => {
 			return {
 				key: el._id,
 				id: el._id,
-				name: `${item?.name}${item?.mfr ? ' / ' + item.mfr : ''}${item?.measuring ? ' / ' + item.measuring : ''}`,
+				name: formatProductName(item),
 				date: formatDate(el.date),
 				fullDate: el.date
 			}

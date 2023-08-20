@@ -7,10 +7,11 @@ function getEndpoint(): string {
 	return '/api/dictionary';
 }
 
-interface DictionaryItem extends BaseElementInfo {
+export interface DictionaryItem extends BaseElementInfo {
 	name: string;
 	mfr: string;
-	measuring?: string;
+	measuring?: string; // 20 capsules
+	dose?: string; // 500mg
 }
 
 type DictionaryListResponse = {
@@ -42,6 +43,7 @@ type CreateDictionaryItemRequest = {
 	name: string;
 	mfr: string;
 	measuring?: string;
+	dose?: string;
 };
 
 type CreateDictionaryItemResponse = {
@@ -65,6 +67,7 @@ type EditDictionaryItemRequest = {
 	name: string;
 	mfr: string;
 	measuring?: string;
+	dose?: string;
 };
 
 type EditDictionaryItemResponse = {

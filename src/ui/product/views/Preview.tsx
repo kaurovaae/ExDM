@@ -17,6 +17,7 @@ import {QUERY}			 				from "ui/product/consts";
 import {QUERY as DICTIONARY_QUERY} 		from "ui/dictionary/consts";
 import {getDictionaryList} 				from "ui/shared/services/dictionary";
 import {DATE_FORMAT} 					from "ui/shared/consts";
+import {formatProductName} 				from "ui/shared/helpers";
 import dayjs 							from "dayjs";
 import URLS 							from "../../../urls";
 
@@ -82,10 +83,7 @@ const ProductPreview: React.FC = (): React.ReactElement => {
 					<Select
 						placeholder="Введите наименование"
 						className={styles.input}
-						options={dInitial && dInitial.map(el => ({
-							value: el._id,
-							label: `${el?.name}${el?.mfr ? ' / ' + el.mfr : ''}${el?.measuring ? ' / ' + el.measuring : ''}`
-						}))}
+						options={dInitial && dInitial.map(el => ({value: el._id, label: formatProductName(el)}))}
 						disabled
 					/>
 				</Form.Item>

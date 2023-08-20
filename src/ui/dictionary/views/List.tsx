@@ -10,6 +10,7 @@ import {
 	removeDictionaryItem,
 	getDictionaryList
 }										from "ui/shared/services/dictionary";
+import {formatProductName} 				from "ui/shared/helpers";
 import Table							from "ui/ui-kit/Table";
 import URLS 							from "../../../urls";
 import Spinner 							from "ui/ui-kit/Spinner";
@@ -65,7 +66,7 @@ const DictionaryList: React.FC = (): React.ReactElement => {
 		?.map(el => ({
 			key: el._id,
 			id: el._id,
-			name: `${el.name}${el.mfr ? ' / ' + el.mfr : ''}${el.measuring ? ' / ' + el.measuring : ''}`
+			name: formatProductName(el)
 		}))
 		?.sort((a, b) => a.name.localeCompare(b.name))
 	, [products]);

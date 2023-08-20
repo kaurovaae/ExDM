@@ -85,9 +85,24 @@ const DictionaryPreview: React.FC = (): React.ReactElement => {
 
 				<Form.Item
 					name="measuring"
+					label="Мера измерения"
+					rules={[
+						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
+					]}
+					className={styles.field}
+				>
+					<Input
+						placeholder="Количество капсул, таблеток, и тд в упаковке"
+						className={styles.input}
+						disabled
+					/>
+				</Form.Item>
+
+				<Form.Item
+					name="dose"
 					label="Дозировка"
 					rules={[
-						{required: true, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
+						{required: false, message: 'Необходимо заполнить поле. Минимум 3 символа', min: 3}
 					]}
 					className={styles.field}
 				>
