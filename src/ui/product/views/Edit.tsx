@@ -51,7 +51,8 @@ const ProductEdit: React.FC = (): React.ReactElement => {
 	const mutation = useMutation(editProductItem, {
 		onSuccess: (data) => {
 			if (data?.ok) {
-				void queryClient.invalidateQueries([QUERY.PRODUCT_LIST, `${id}`]);
+				void queryClient.invalidateQueries([QUERY.PRODUCT_LIST]);
+				void queryClient.invalidateQueries([QUERY.PRODUCT_ITEM, `${id}`]);
 				void message.success(MESSAGE.SUCCESS_EDIT);
 			} else {
 				void message.error(data?.result?.message || MESSAGE.ERROR_EDIT);

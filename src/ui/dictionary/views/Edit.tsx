@@ -37,7 +37,8 @@ const DictionaryEdit: React.FC = (): React.ReactElement => {
 	const mutation = useMutation(editDictionaryItem, {
 		onSuccess: (data) => {
 			if (data?.ok) {
-				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST, `${id}`]);
+				void queryClient.invalidateQueries([QUERY.DICTIONARY_LIST]);
+				void queryClient.invalidateQueries([QUERY.DICTIONARY_ITEM, `${id}`]);
 				void message.success(MESSAGE.SUCCESS_EDIT);
 			} else {
 				void message.error(data?.result?.message || MESSAGE.ERROR_EDIT);
