@@ -5,11 +5,11 @@
 }
 
 .logo {
-	height: 32px;
-	margin: 16px;
-	background: rgba(255, 255, 255, .2);
-	border-radius: 6px;
+	height: 64px;
+	margin: 24px 16px;
 	display: block;
+	mask: center / contain url("./img/logo.svg") no-repeat;
+	background-color: #fff;
 }
 
 .header {
