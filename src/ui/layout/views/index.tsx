@@ -62,7 +62,7 @@ const LayoutContent: React.FC = (): React.ReactElement => {
 							</Routes>
 						</div>
 					</Content>
-					<Footer className={styles.footer}>ExDM © 2023 Created by AnitaChess</Footer>
+					<Footer className={styles.footer}>ExDM © 2023-2024 Created by AnitaChess</Footer>
 				</Layout>
 			</Layout>
 		</ConfigProvider>
