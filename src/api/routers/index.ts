@@ -1,19 +1,19 @@
-import express 							from "express";
-import ProductController 				from "../controllers/product";
-import DictionaryController 			from "../controllers/dictionary";
+import express 								from "express";
+import * as productController 				from "../controllers/product";
+import * as dictionaryController 			from "../controllers/dictionary";
 
 const router = express.Router();
 
-router.post('/product', ProductController.createProduct);
-router.put('/product/:id', ProductController.updateProduct);
-router.delete('/product/:id', ProductController.deleteProduct);
-router.get('/product/:id', ProductController.getProductById);
-router.get('/product', ProductController.getProducts);
+router.post('/product', productController.createProduct);
+router.put('/product/:id', productController.updateProduct);
+router.delete('/product/:id', productController.deleteProduct);
+router.get('/product/:id', productController.getProductById);
+router.get('/product', productController.getProducts);
 
-router.post('/dictionary', DictionaryController.createItem);
-router.put('/dictionary/:id', DictionaryController.updateItem);
-router.delete('/dictionary/:id', DictionaryController.deleteItem);
-router.get('/dictionary/:id', DictionaryController.getItemById);
-router.get('/dictionary', DictionaryController.getItems);
+router.post('/dictionary', dictionaryController.createItem);
+router.put('/dictionary/:id', dictionaryController.updateItem);
+router.delete('/dictionary/:id', dictionaryController.deleteItem);
+router.get('/dictionary/:id', dictionaryController.getItemById);
+router.get('/dictionary', dictionaryController.getItems);
 
 export default router;

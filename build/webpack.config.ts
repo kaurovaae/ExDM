@@ -85,16 +85,10 @@ export function getConfig(isProd: boolean, targets: string[]): unknown {
 								postcssOptions: {
 									plugins: [
 										[
-											"postcss-custom-media",
-										],
-										[
 											'postcss-discard-comments',
 											{
 												removeAll: true,
 											},
-										],
-										[
-											'postcss-mixins',
 										],
 										[
 											'postcss-preset-env',

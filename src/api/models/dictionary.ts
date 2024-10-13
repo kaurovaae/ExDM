@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import {Schema, model} from "mongoose";
 
-const DictionaryItem = new Schema(
+export const DictionaryItem = new Schema(
     {
         name: {
             type: String,
@@ -29,4 +28,4 @@ const DictionaryItem = new Schema(
     }
 );
 
-module.exports = mongoose.model('dictionary', DictionaryItem);
+export default model('dictionary', DictionaryItem);

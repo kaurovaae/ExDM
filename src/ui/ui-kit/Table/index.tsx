@@ -10,7 +10,7 @@ import {
 	TablePaginationConfig
 } 											from "antd";
 
-import type {ColumnsType} 					from "antd/es/table";
+import type {ColumnType, TableProps} 		from "antd/es/table";
 
 import styles 								from "./index.css";
 
@@ -23,8 +23,8 @@ interface Props {
 	onRemove: (id: string) => void;
 	onSelect?: (item: unknown) => void;
 
-	columns: ColumnsType<object>;
-	dataSource?: readonly object[];
+	columns: ColumnType<object>;
+	dataSource?: TableProps<object>;
 	pagination?: TablePaginationConfig;
 
 	beforeTable?: string | React.ReactElement | React.ReactElement[];

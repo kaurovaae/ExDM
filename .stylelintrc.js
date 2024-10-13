@@ -1,9 +1,7 @@
 module.exports = {
 	extends: ['stylelint-config-standard'],
 	rules: {
-		'number-leading-zero': null,
 		'declaration-empty-line-before': 'never',
-		'no-missing-end-of-source-newline': null,
 		'declaration-block-no-duplicate-properties': true,
 		'no-invalid-double-slash-comments': null,
 		'no-descending-specificity': null,
@@ -15,7 +13,6 @@ module.exports = {
 		'font-family-name-quotes': null,
 		'color-function-notation': null,
 		'alpha-value-notation': null,
-		'max-line-length': null,
 		'at-rule-no-unknown':[
 			true,
 			{

@@ -12,7 +12,6 @@ import ru_RU 							from 'antd/es/locale/ru_RU';
 
 import styles 							from "./index.css";
 
-import 'antd/dist/reset.css';
 import 'dayjs/locale/ru';
 
 dayjs.locale('ru');

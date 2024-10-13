@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import {Schema, model} 					from 'mongoose';
 
-const Product = new Schema(
+export const Product = new Schema(
     {
         dictionaryId: {
             type: String,
@@ -17,4 +16,4 @@ const Product = new Schema(
     }
 );
 
-module.exports = mongoose.model('products', Product);
+export default model('products', Product);
